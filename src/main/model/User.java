@@ -1,9 +1,9 @@
 package model;
 
 import java.awt.*;
+import java.util.List;
 
 public class User {
-    private String name;
-    private List activitiesPosted;
-    private List activitiesJoined;
+    private List<Activity> activitiesPosted;
+    private List<Activity> activitiesJoined;
 }
