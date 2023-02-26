@@ -1,27 +1,61 @@
 package model;
 
+import ui.Application;
+
+import java.time.LocalDate;
+
 public class Activity {
 
-    private enum Type {
-        WALK,
-        RUN,
-        BIKE
+    private ui.Application.Type type;
+    private ui.Application.Area area;
+    private LocalDate date; //https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html
+
+    // EFFECTS: create a new activity with give type, area, and date
+    public Activity(ui.Application.Type type, ui.Application.Area area, LocalDate date) {
+        this.type = type;
+        this.area = area;
+        this.date = date;
     }
 
-    private enum Area {
-        VANCOUVER,
-        BURNABY,
-        SURREY
+    // EFFECTS: return date
+    public LocalDate getDate() {
+        return this.date;
     }
 
-    Type type;
-    Area area;
-    String date; // FORMAT CORRECTLY
-
-
-    public Activity() {
-        type = Type.WALK;
-        area = Area.SURREY;
+    // EFFECTS: return type
+    public Application.Type getType() {
+        return this.type;
     }
 
+    // EFFECTS: return area
+    public Application.Area getArea() {
+        return this.area;
+    }
+
+    // EFFECTS: return type as a printable string
+    public String getTypeToPrint() {
+        switch (this.type) {
+            case WALK:
+                return "Walking";
+            case RUN:
+                return "Running";
+            case BIKE:
+                return "Biking";
+
+        }
+        return null;
+    }
+
+    // EFFECTS: return area as a printable string
+    public String getAreaToPrint() {
+        switch (this.area) {
+            case VANCOUVER:
+                return "Vancouver";
+            case BURNABY:
+                return "Burnaby";
+            case SURREY:
+                return "Surrey";
+        }
+        return null;
+    }
 }
