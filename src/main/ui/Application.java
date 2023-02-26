@@ -140,6 +140,7 @@ public class Application {
         }
     }
 
+    // MODIFIES: this
     // EFFECTS: display options to filter by activity type and process user input
     private void filterType(String type) {
         System.out.println("\nSelect activity type:");
