@@ -18,6 +18,9 @@ to solve this issue and foster communities that support active lifestyles.
 - As a user, I want to be able to post an activity to the upcoming activities
 - As a user, I want to be able to see the activities I have posted
 - As a user, I want to be able to remove an activity I have posted
+- As a user, I want to be given the option to *save* my activities to a file when I select the quit option from 
+the main menu
+- As a user, I want to be given the option to *load* my activities from a file when I start the application
 
 ## Personal Goals
 Not all will be completed, but some ideas for extra features:
