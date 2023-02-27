@@ -48,9 +48,9 @@ public class Activity {
                 return "Running";
             case BIKE:
                 return "Biking";
-
+            default:
+                return null;
         }
-        return null;
     }
 
     // EFFECTS: return area as a printable string
@@ -62,7 +62,8 @@ public class Activity {
                 return "Burnaby";
             case SURREY:
                 return "Surrey";
+            default:
+                return null;
         }
-        return null;
     }
 }
