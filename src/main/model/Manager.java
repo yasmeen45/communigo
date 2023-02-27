@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+// Manages functionality with a user and all upcoming activities
 public class Manager {
 
     private enum Type {

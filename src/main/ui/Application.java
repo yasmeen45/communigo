@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// Runs applications: displays menu options and handles all user input
 public class Application {
 
     public enum Type {

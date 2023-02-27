@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents a user with activities they posted and activities they are registered in
 public class User {
     private List<Activity> postedActivities;
     private List<Activity> registeredActivities;

@@ -4,6 +4,7 @@ import ui.Application;
 
 import java.time.LocalDate;
 
+// Represents and activity with a type, area, and date
 public class Activity {
 
     private ui.Application.Type type;
