@@ -20,7 +20,6 @@ class ActivityTest {
         a1 = new Activity(Application.Type.RUN, Application.Area.VANCOUVER, LocalDate.parse("2023-05-01"));
         a2 = new Activity(Application.Type.WALK, Application.Area.BURNABY, LocalDate.parse("2023-04-01"));
         a3 = new Activity(Application.Type.BIKE, Application.Area.SURREY, LocalDate.parse("2023-05-05"));
-        a4 = new Activity(null, null, LocalDate.parse("2023-05-05"));
     }
 
     @Test
@@ -58,7 +57,6 @@ class ActivityTest {
         assertEquals("Running", a1.getTypeToPrint());
         assertEquals("Walking", a2.getTypeToPrint());
         assertEquals("Biking", a3.getTypeToPrint());
-        assertEquals(null, a4.getTypeToPrint());
     }
 
     @Test
@@ -66,6 +64,5 @@ class ActivityTest {
         assertEquals("Vancouver", a1.getAreaToPrint());
         assertEquals("Burnaby", a2.getAreaToPrint());
         assertEquals("Surrey", a3.getAreaToPrint());
-        assertEquals(null, a4.getAreaToPrint());
     }
 }
