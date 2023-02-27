@@ -6,7 +6,7 @@ import ui.Application;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ActivityTest {
 
@@ -34,6 +34,21 @@ class ActivityTest {
         assertEquals(Application.Type.BIKE, a3.getType());
         assertEquals(Application.Area.SURREY, a3.getArea());
         assertEquals(LocalDate.parse("2023-05-05"), a3.getDate());
+    }
+
+    @Test
+    public void testEqualTo() {
+        Activity a4 = new Activity(Application.Type.RUN, Application.Area.VANCOUVER, LocalDate.parse("2023-05-01"));
+        assertTrue(a1.equalTo(a4));
+
+        Activity a5 = new Activity(Application.Type.WALK, Application.Area.VANCOUVER, LocalDate.parse("2023-05-01"));
+        assertFalse(a1.equalTo(a5));
+
+        Activity a6 = new Activity(Application.Type.RUN, Application.Area.SURREY, LocalDate.parse("2023-05-01"));
+        assertFalse(a1.equalTo(a6));
+
+        Activity a7 = new Activity(Application.Type.RUN, Application.Area.VANCOUVER, LocalDate.parse("2023-05-06"));
+        assertFalse(a1.equalTo(a7));
     }
 
     @Test
