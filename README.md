@@ -11,7 +11,7 @@ to solve this issue and foster communities that support active lifestyles.
 
 ## Key Functionalities / User Stories
 - As a user, I want to be able to view all upcoming activities
-- As a user, I want to be able to search through upcoming activities by type, area, and/or date
+- As a user, I want to be able to search through upcoming activities by type, area, or date
 - As a user, I want to be able to join an activity
 - As a user, I want to be able to cancel an activity I have joined
 - As a user, I want to be able to see the activities I have joined
