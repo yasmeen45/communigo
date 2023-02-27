@@ -52,12 +52,6 @@ public class User {
     public List<Activity> getRegisteredActivities() {
         return this.registeredActivities;
     }
-
-    // REQUIRES: i < size of postedActivities
-    // EFFECTS: return activity at index i in postedActivities
-    public Activity getPostedActivityAt(int i) {
-        return postedActivities.get(i);
-    }
 }
 
 

@@ -1,5 +1,52 @@
 package model;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ui.Application;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ActivityTest {
-    // delete or rename this class!
+
+    Activity a1;
+    Activity a2;
+    Activity a3;
+
+    @BeforeEach
+    public void setup() {
+        a1 = new Activity(Application.Type.RUN, Application.Area.VANCOUVER, LocalDate.parse("2023-05-01"));
+        a2 = new Activity(Application.Type.WALK, Application.Area.BURNABY, LocalDate.parse("2023-04-01"));
+        a3 = new Activity(Application.Type.BIKE, Application.Area.SURREY, LocalDate.parse("2023-05-05"));
+    }
+
+    @Test
+    public void testConstructor() {
+        assertEquals(Application.Type.RUN, a1.getType());
+        assertEquals(Application.Area.VANCOUVER, a1.getArea());
+        assertEquals(LocalDate.parse("2023-05-01"), a1.getDate());
+
+        assertEquals(Application.Type.WALK, a2.getType());
+        assertEquals(Application.Area.BURNABY, a2.getArea());
+        assertEquals(LocalDate.parse("2023-04-01"), a2.getDate());
+
+        assertEquals(Application.Type.BIKE, a3.getType());
+        assertEquals(Application.Area.SURREY, a3.getArea());
+        assertEquals(LocalDate.parse("2023-05-05"), a3.getDate());
+    }
+
+    @Test
+    public void testTypeToPrint() {
+        assertEquals("Running", a1.getTypeToPrint());
+        assertEquals("Walking", a2.getTypeToPrint());
+        assertEquals("Biking", a3.getTypeToPrint());
+    }
+
+    @Test
+    public void testAreaToPrint() {
+        assertEquals("Vancouver", a1.getAreaToPrint());
+        assertEquals("Burnaby", a2.getAreaToPrint());
+        assertEquals("Surrey", a3.getAreaToPrint());
+    }
 }
