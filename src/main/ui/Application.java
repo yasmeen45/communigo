@@ -4,7 +4,7 @@ import model.Activity;
 import model.Manager;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,19 +74,16 @@ public class Application {
     private void processCommandMainMenu(String command) {
         switch (command) {
             case "1":
-                viewActivities("upcoming");
-                registerActivity();
+                viewUpcomingActivities();
                 break;
             case "2":
                 createPosting();
                 break;
             case "3":
-                viewActivities("posted");
-                deletePosting();
+                displayPostedActivities();
                 break;
             case "4":
-                viewActivities("registered");
-                cancelRegistration();
+                displayRegisteredActivities();
                 break;
             case "5":
                 break;
@@ -95,18 +92,40 @@ public class Application {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: display posted activities or error message if none. get user input to delete posting
+    public void displayPostedActivities() {
+        System.out.println("\n\nPosted Activities\n-----------------");
+        List<Activity> postedActivities = manager.getPostedActivities();
+        if (postedActivities.isEmpty()) {
+            System.out.println("\nSorry, there are no activities!\nReturning to main menu...");
+        } else {
+            displayActivities(postedActivities);
+            deletePosting(postedActivities);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: display registered activities or error message if none. get user input to cancel registration
+    public void displayRegisteredActivities() {
+        System.out.println("\n\nRegistered Activities\n---------------------");
+        List<Activity> registeredActivities = manager.getRegisteredActivities();
+        if (registeredActivities.isEmpty()) {
+            System.out.println("\nSorry, there are no activities!\nReturning to main menu...");
+        } else {
+            displayActivities(registeredActivities);
+            cancelRegistration(registeredActivities);
+        }
+    }
 
     // DISPLAYING ACTIVITIES =======================================================================================
 
-    // MODIFIES: this
     // EFFECTS: display menu to filter and list activities
-    private void viewActivities(String type) {
-        String firstLetterCap = type.substring(0, 1).toUpperCase() + type.substring(1);
-        //https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
-        System.out.println("\n\n" + firstLetterCap + " Activities");
+    private void viewUpcomingActivities() {
+        System.out.println("\n\nUpcoming Activities");
         System.out.println("-------------------");
 
-        System.out.println("\nView " + type + " activities by:");
+        System.out.println("\nView activities by:");
         System.out.println("\t(1) Type");
         System.out.println("\t(2) Date");
         System.out.println("\t(3) Area");
@@ -116,95 +135,128 @@ public class Application {
 
         String command = null;
         command = input.nextLine();
-        processCommandViewActivity(command, type);
+        processCommandViewActivity(command);
     }
 
-    // MODIFIES: this
-    // EFFECTS: process user input to determine next action
-    private void processCommandViewActivity(String command, String type) {
+    // EFFECTS: process user input to determine next action for filtering activities
+    private void processCommandViewActivity(String command) {
         switch (command) {
             case "1":
-                filterType(type);
+                filterType();
                 break;
             case "2":
-                filterDate(type);
+                filterDate();
                 break;
             case "3":
-                filterArea(type);
+                filterArea();
                 break;
             case "4":
                 displayActivities(manager.getActivitiesChronological());
+                registerActivity(manager.getActivitiesChronological());
                 break;
             default:
                 System.out.print("Please enter a valid choice: ");
         }
     }
 
-    // MODIFIES: this
     // EFFECTS: display options to filter by activity type and process user input
-    private void filterType(String type) {
+    private void filterType() {
+        displayFilterTypeOptions();
+        String command = null;
+        command = input.nextLine();
+        List<Activity> display = new ArrayList<>();
+
+        switch (command) {
+            case "1":
+                display = manager.getActivitiesWithType(Type.WALK);
+                break;
+            case "2":
+                display = manager.getActivitiesWithType(Type.RUN);
+                break;
+            case "3":
+                display = manager.getActivitiesWithType(Type.BIKE);
+                break;
+            default:
+                System.out.print("Please enter a valid choice: ");
+        }
+
+        if (display.isEmpty()) {
+            System.out.println("\nSorry, there are no activities!\nReturning to main menu...");
+        } else {
+            displayActivities(display);
+            registerActivity(display);
+        }
+    }
+
+    // EFFECTS: display options for filtering by activity type
+    private void displayFilterTypeOptions() {
         System.out.println("\nSelect activity type:");
         System.out.println("\t(1) Walking");
         System.out.println("\t(2) Running");
         System.out.println("\t(3) Biking");
 
         System.out.print("\nEnter the number of your choice: ");
-
-        String command = null;
-        command = input.nextLine();
-
-        switch (command) {
-            case "1":
-                // displayActivities(manager.filterByType("WALK", type);
-                // TODO - set up manager methods to get appropriate activity lists
-            case "2":
-                break;
-            case "3":
-                break;
-            default:
-                System.out.print("Please enter a valid choice: ");
-        }
     }
 
     // EFFECTS: process user input to display activities of a specific date
-    private void filterDate(String type) {
+    private void filterDate() {
         System.out.print("\nEnter date (yyyy-mm-dd): ");
 
         String command = null;
         command = input.nextLine();
         LocalDate date = LocalDate.parse(command);
+        List<Activity> display = manager.getActivitiesWithDate(date);
 
-        // displayActivities(manager.filterByDate(date, type)
-        // TODO - make manager method to return activities with appropriate date
+        if (display.isEmpty()) {
+            System.out.println("\nSorry, there are no activities!\nReturning to main menu...");
+        } else {
+            displayActivities(display);
+            registerActivity(display);
+        }
     }
 
     // EFFECTS: display options to filter by activity area and process user input
-    private void filterArea(String type) {
+    private void filterArea() {
+        displayFilterAreaOptions();
+        String command = null;
+        command = input.nextLine();
+        List<Activity> display = new ArrayList<>();
+
+        switch (command) {
+            case "1":
+                display = manager.getActivitiesWithArea(Area.VANCOUVER);
+                break;
+            case "2":
+                display = manager.getActivitiesWithArea(Area.BURNABY);
+                break;
+            case "3":
+                display = manager.getActivitiesWithArea(Area.SURREY);
+                break;
+            default:
+                System.out.print("Please enter a valid choice: ");
+        }
+
+        if (display.isEmpty()) {
+            System.out.println("\nSorry, there are no activities!\nReturning to main menu...");
+        } else {
+            displayActivities(display);
+            registerActivity(display);
+        }
+    }
+
+    // EFFECTS: display options for filtering by activity area
+    private void displayFilterAreaOptions() {
         System.out.println("\nSelect activity Area:");
         System.out.println("\t(1) Vancouver");
         System.out.println("\t(2) Burnaby");
         System.out.println("\t(3) Surrey");
 
         System.out.print("\nEnter the number of your choice: ");
-
-        String command = null;
-        command = input.nextLine();
-
-        switch (command) {
-            case "1":
-                // displayActivities(manager.filterByArea("VANCOUVER", type);
-                // TODO - set up manager methods to get appropriate activity lists
-            case "2":
-                break;
-            case "3":
-                break;
-            default:
-                System.out.print("Please enter a valid choice: ");
-        }
     }
 
     // EFFECTS: display provided list to user
     private void displayActivities(List<Activity> activities) {
+
         int index = 1;
         for (Activity a : activities) {
             System.out.println("\n(" + index + ") " + a.getTypeToPrint());
@@ -214,16 +266,12 @@ public class Application {
         }
     }
 
-
     // REGISTER/REMOVE/CANCEL ========================================================================================
 
+    // MODIFIES: this
     // EFFECTS: Display option to register in an activity and process user input for activity selection
-    private void registerActivity() {
-        System.out.println("\nSelect an option:");
-        System.out.println("\t(1) Register in an activity");
-        System.out.println("\t(2) Main menu");
-
-        System.out.print("\nEnter the number of your choice: ");
+    private void registerActivity(List<Activity> displayed) {
+        displayRegisterActivityOptions();
 
         String command = null;
         command = input.nextLine();
@@ -231,12 +279,20 @@ public class Application {
         switch (command) {
             case "1":
                 System.out.print("\nEnter the number of the activity to register in: ");
+
                 String index = null;
                 index = input.nextLine();
-                // manager.registerActivity(index);
-                // TODO - registerActivity method in manager
-                System.out.println("\nSuccess! You are now registered in the activity.");
-                System.out.println("Returning to main menu...");
+                int i = Integer.parseInt(index) - 1;
+                // https://codegym.cc/groups/posts/string-to-int-java
+
+                Activity activity = displayed.get(i);
+                if (manager.alreadyRegistered(activity)) {
+                    System.out.println("\nYou are already registered in this activity!");
+                } else {
+                    manager.registerActivity(activity);
+                    System.out.println("\nSuccess! You are now registered in the activity.");
+                    System.out.println("Returning to main menu...");
+                }
             case "2":
                 break;
             default:
@@ -244,8 +300,17 @@ public class Application {
         }
     }
 
+    public void displayRegisterActivityOptions() {
+        System.out.println("\nSelect an option:");
+        System.out.println("\t(1) Register in an activity");
+        System.out.println("\t(2) Main menu");
+
+        System.out.print("\nEnter the number of your choice: ");
+    }
+
+    // MODIFIES: this
     // EFFECTS: Display option to delete a posting and process user input for posting selection
-    private void deletePosting() {
+    private void deletePosting(List<Activity> displayed) {
         System.out.println("\nSelect an option:");
         System.out.println("\t(1) Delete a posting");
         System.out.println("\t(2) Main menu");
@@ -260,8 +325,12 @@ public class Application {
                 System.out.print("\nEnter the number of the posting to delete: ");
                 String index = null;
                 index = input.nextLine();
-                // manager.deletePosting(index);
-                // TODO - deletePosting method in manager
+
+                int i = Integer.parseInt(index) - 1;
+
+                Activity posting = displayed.get(i);
+                manager.deletePosting(posting);
+
                 System.out.println("\nSuccess! Your posting is deleted.");
                 System.out.println("Returning to main menu...");
             case "2":
@@ -271,8 +340,9 @@ public class Application {
         }
     }
 
+    // MODIFIES: this
     // EFFECTS: Display option to cancel registration in an activity and process user input for activity selection
-    private void cancelRegistration() {
+    private void cancelRegistration(List<Activity> displayed) {
         System.out.println("\nSelect an option:");
         System.out.println("\t(1) Cancel Registration for an activity");
         System.out.println("\t(2) Main menu");
@@ -287,8 +357,11 @@ public class Application {
                 System.out.print("\nEnter the number of the activity to cancel: ");
                 String index = null;
                 index = input.nextLine();
-                // manager.cancelRegistration(index);
-                // TODO - cancelRegistration method in manager
+
+                int i = Integer.parseInt(index) - 1;
+                Activity posting = displayed.get(i);
+                manager.cancelRegistration(posting);
+
                 System.out.println("\nSuccess! Your registration is cancelled.");
                 System.out.println("Returning to main menu...");
             case "2":
@@ -321,7 +394,7 @@ public class Application {
 
         date = LocalDate.parse(command);
 
-        // TODO - manager.createActivity(type, date, area);
+        manager.postActivity(type, area, date);
 
         System.out.println("\nSuccess! Your activity is posted.");
         System.out.println("Returning to main menu...");
