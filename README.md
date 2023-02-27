@@ -18,7 +18,7 @@ to solve this issue and foster communities that support active lifestyles.
 - As a user, I want to be able to post an activity to the upcoming activities
 - As a user, I want to be able to see the activities I have posted
 - As a user, I want to be able to remove an activity I have posted
-- As a user, I want to be able to save me activites to a file
+- As a user, I want to be able to save me activities to a file
 - As a user, I want to be able to load my activities from a file
 
 ## Personal Goals
