@@ -124,7 +124,7 @@ public class Manager {
                 result.add(a);
             }
         }
-        return result;
+        return sortChronological(result);
     }
 
     // REQUIRES: Area is not null
@@ -136,7 +136,7 @@ public class Manager {
                 result.add(a);
             }
         }
-        return result;
+        return sortChronological(result);
     }
 
     // REQUIRES: date is not null
@@ -148,7 +148,7 @@ public class Manager {
                 result.add(a);
             }
         }
-        return result;
+        return sortChronological(result);
     }
 
 }

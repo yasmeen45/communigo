@@ -17,6 +17,12 @@ public class Activity {
         this.date = date;
     }
 
+    // EFFECTS: return true if contents of a is equal to this
+    public boolean equalTo(Activity a) {
+        return ((this.type == a.getType()) && (this.area == a.getArea())
+                && (this.date.toString().equals(a.getDate().toString())));
+    }
+
     // EFFECTS: return date
     public LocalDate getDate() {
         return this.date;
