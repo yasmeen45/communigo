@@ -46,10 +46,8 @@ public class Activity {
                 return "Walking";
             case RUN:
                 return "Running";
-            case BIKE:
-                return "Biking";
             default:
-                return null;
+                return "Biking";
         }
     }
 
@@ -60,10 +58,8 @@ public class Activity {
                 return "Vancouver";
             case BURNABY:
                 return "Burnaby";
-            case SURREY:
-                return "Surrey";
             default:
-                return null;
+                return "Surrey";
         }
     }
 }

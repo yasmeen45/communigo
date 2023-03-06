@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import ui.Application;
 
 import java.time.LocalDate;
@@ -9,18 +10,6 @@ import java.util.List;
 
 // Manages functionality with a user and all upcoming activities
 public class Manager {
-
-    private enum Type {
-        WALK,
-        RUN,
-        BIKE
-    }
-
-    private enum Area {
-        VANCOUVER,
-        BURNABY,
-        SURREY
-    }
 
     private User user;
     private List<Activity> upcomingActivities;
@@ -150,6 +139,11 @@ public class Manager {
             }
         }
         return sortChronological(result);
+    }
+
+    // TODO
+    public JSONObject toJson() {
+        return new JSONObject();
     }
 
 }

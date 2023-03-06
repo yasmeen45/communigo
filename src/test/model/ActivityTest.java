@@ -13,7 +13,6 @@ class ActivityTest {
     Activity a1;
     Activity a2;
     Activity a3;
-    Activity a4;
 
     @BeforeEach
     public void setup() {
