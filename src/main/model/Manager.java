@@ -1,6 +1,8 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import persistance.Writable;
 import ui.Application;
 
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // Manages functionality with a user and all upcoming activities
-public class Manager {
+public class Manager implements Writable {
 
     private User user;
     private List<Activity> upcomingActivities;
@@ -141,10 +143,26 @@ public class Manager {
         return sortChronological(result);
     }
 
-    // TODO
+    // citation: modelled after Json Demo provided in P2 description on EdX
+    @Override
     public JSONObject toJson() {
-        return new JSONObject();
+        JSONObject object = new JSONObject();
+        object.put("user", user.toJson());
+        object.put("upcoming activities", activitiesToJson(upcomingActivities));
+        return object;
     }
+
+    // return given list of activities as a JSON array
+    public JSONArray activitiesToJson(List<Activity> activities) {
+        JSONArray array = new JSONArray();
+
+        for (Activity activity : activities) {
+            array.put(activity.toJson());
+        }
+
+        return array;
+    }
+
 
 }
 

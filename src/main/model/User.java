@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a user with activities they posted and activities they are registered in
-public class User {
+public class User implements Writable {
     private List<Activity> postedActivities;
     private List<Activity> registeredActivities;
 
@@ -52,6 +55,16 @@ public class User {
     // EFFECTS: return registered activities
     public List<Activity> getRegisteredActivities() {
         return this.registeredActivities;
+    }
+
+    // citation: modelled after Json Demo provided in P2 description on EdX
+    @Override
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        Manager manager = new Manager();
+        object.put("registered activities", manager.activitiesToJson(registeredActivities));
+        object.put("posted activities", manager.activitiesToJson(postedActivities));
+        return object;
     }
 }
 

@@ -2,11 +2,19 @@ package ui;
 
 import model.Activity;
 import model.Manager;
+import org.json.JSONObject;
+import persistance.JsonWriter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOError;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+// citation: modelled after Json Demo provided in P2 description on EdX
 
 // Runs applications: displays menu options and handles all user input
 public class Application {
@@ -23,14 +31,18 @@ public class Application {
         SURREY
     }
 
+    private static final String JSON_FILE = "./data/saved.json";
     private Manager manager;
     private Scanner input;
+    private JsonWriter jsonWriter;
 
-    // EFFECTS: creates a new instance of application with a manager, Scanner (with a delimiter), and runs application
+    // EFFECTS: creates a new instance of application with a manager, Scanner (with a delimiter),
+    //          Json reader/writes, and runs application
     public Application() {
         this.manager = new Manager();
         this.input = new Scanner(System.in);
         this.input.useDelimiter("\n");
+        jsonWriter = new JsonWriter(JSON_FILE);
         runApp();
     }
 
@@ -44,7 +56,7 @@ public class Application {
             displayMainMenu();
             command = input.nextLine();
 
-            if (command.equals("5")) {
+            if (command.equals("7")) {
                 runApp = false;
             } else {
                 processCommandMainMenu(command);
@@ -64,7 +76,9 @@ public class Application {
         System.out.println("(2) Post an activity");
         System.out.println("(3) View my posted activities");
         System.out.println("(4) View my registered activities");
-        System.out.println("(5) Quit");
+        System.out.println("(5) Save data to file");
+        System.out.println("(6) Load data from file");
+        System.out.println("(7) Quit");
 
         System.out.print("\nEnter the number of your choice: ");
     }
@@ -87,9 +101,15 @@ public class Application {
                 displayRegisteredActivities();
                 break;
             case "5":
+                saveData();
+                break;
+            case "6":
+                loadData();
                 break;
             default:
-                System.out.print("Please enter a valid choice: ");
+                break;
+            //default:
+            //    System.out.print("Please enter a valid choice: ");
         }
     }
 
@@ -449,6 +469,29 @@ public class Application {
                 System.out.print("Please enter a valid choice: ");
         }
         return null;
+    }
+
+
+    // JSON read/write methods ====================================================================
+    private void saveData() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(manager);
+            jsonWriter.close();
+            System.out.println("\nSuccess! Data saved.");
+        } catch (FileNotFoundException e) {
+            System.out.println("\nUnable to save to file.");
+        }
+    }
+
+    private void loadData() {
+        /*
+        try {
+            int x = 1;
+        } catch (IOException e) {
+            System.out.println("\nUnable to read from file.");
+        }
+         */
     }
 
 }

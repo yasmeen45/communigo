@@ -1,11 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Writable;
 import ui.Application;
 
 import java.time.LocalDate;
 
 // Represents and activity with a type, area, and date
-public class Activity {
+public class Activity implements Writable {
 
     private ui.Application.Type type;
     private ui.Application.Area area;
@@ -61,5 +63,15 @@ public class Activity {
             default:
                 return "Surrey";
         }
+    }
+
+    // citation: modelled after Json Demo provided in P2 description on EdX
+    @Override
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        object.put("type", this.type);
+        object.put("area", this.area);
+        object.put("date", this.date.toString());
+        return object;
     }
 }
