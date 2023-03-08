@@ -29,6 +29,13 @@ public class Manager implements Writable {
         this.createActivity(ui.Application.Type.RUN, ui.Application.Area.BURNABY, LocalDate.parse("2023-05-14"));
     }
 
+    // EFFECTS: create a new manager with given user and upcomingActivities
+    // TODO - TEST THIS METHOD
+    public Manager(User user, List<Activity> activities) {
+        this.user = user;
+        this.upcomingActivities = activities;
+    }
+
     // MODIFIES: this
     // REQUIRES: date is not null
     // EFFECTS: create new activity, add it to upcomingActivities, and return it
@@ -144,6 +151,8 @@ public class Manager implements Writable {
     }
 
     // citation: modelled after Json Demo provided in P2 description on EdX
+    // EFFECTS: returns this as a JSON object
+    // TODO: TEST
     @Override
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
@@ -152,7 +161,8 @@ public class Manager implements Writable {
         return object;
     }
 
-    // return given list of activities as a JSON array
+    // TODO: TEST
+    // EFFECTS: return given list of activities as a JSON array
     public JSONArray activitiesToJson(List<Activity> activities) {
         JSONArray array = new JSONArray();
 

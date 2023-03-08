@@ -17,6 +17,13 @@ public class User implements Writable {
         this.registeredActivities = new ArrayList<>();
     }
 
+    // EFFECTS: create new user with given registeredActivities and postedActivities
+    // TODO: TEST THIS
+    public User(List<Activity> registered,List<Activity> posted) {
+        this.registeredActivities = registered;
+        this.postedActivities = posted;
+    }
+
     // MODIFIES: this
     // REQUIRES: activity is not null
     // EFFECTS: add activity to posted activities
@@ -58,6 +65,8 @@ public class User implements Writable {
     }
 
     // citation: modelled after Json Demo provided in P2 description on EdX
+    // EFFECTS: returns this as a JSON object
+    // TODO: TEST
     @Override
     public JSONObject toJson() {
         JSONObject object = new JSONObject();

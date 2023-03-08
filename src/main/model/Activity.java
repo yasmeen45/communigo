@@ -66,6 +66,8 @@ public class Activity implements Writable {
     }
 
     // citation: modelled after Json Demo provided in P2 description on EdX
+    // EFFECTS: returns this as a JSON object
+    // TODO: TEST
     @Override
     public JSONObject toJson() {
         JSONObject object = new JSONObject();

@@ -1,7 +1,5 @@
 package persistance;
 
-// citation: modelled after Json Demo provided in P2 description on EdX
-
 import model.Manager;
 import org.json.JSONObject;
 
@@ -9,7 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// citation: modelled after Json Demo provided in P2 description on EdX
+
 // Represents a writer that writes a JSON representation of Communigo manager (all data) to file
+
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;

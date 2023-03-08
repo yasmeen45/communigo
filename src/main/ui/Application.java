@@ -3,6 +3,7 @@ package ui;
 import model.Activity;
 import model.Manager;
 import org.json.JSONObject;
+import persistance.JsonReader;
 import persistance.JsonWriter;
 
 import java.io.File;
@@ -35,6 +36,7 @@ public class Application {
     private Manager manager;
     private Scanner input;
     private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: creates a new instance of application with a manager, Scanner (with a delimiter),
     //          Json reader/writes, and runs application
@@ -43,6 +45,7 @@ public class Application {
         this.input = new Scanner(System.in);
         this.input.useDelimiter("\n");
         jsonWriter = new JsonWriter(JSON_FILE);
+        jsonReader = new JsonReader(JSON_FILE);
         runApp();
     }
 
@@ -485,13 +488,12 @@ public class Application {
     }
 
     private void loadData() {
-        /*
         try {
-            int x = 1;
+            manager = jsonReader.read();
+            System.out.println("\nSuccess! Data loaded.");
         } catch (IOException e) {
             System.out.println("\nUnable to read from file.");
         }
-         */
     }
 
 }
