@@ -34,11 +34,6 @@ public class Activity implements Writable {
                 activity.getDate());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getType(), getArea(), getDate());
-    }
-
     // EFFECTS: return true if contents of a is equal to this
     public boolean equalTo(Activity a) {
         return ((this.type == a.getType()) && (this.area == a.getArea())

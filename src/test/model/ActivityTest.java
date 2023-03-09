@@ -53,6 +53,11 @@ class ActivityTest {
     }
 
     @Test
+    public void testEquals() {
+        assertFalse(a1.equals(null));
+    }
+
+    @Test
     public void testTypeToPrint() {
         assertEquals("Running", a1.getTypeToPrint());
         assertEquals("Walking", a2.getTypeToPrint());
