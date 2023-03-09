@@ -23,10 +23,15 @@ public class Activity implements Writable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Activity activity = (Activity) o;
-        return getType() == activity.getType() && getArea() == activity.getArea() && Objects.equals(getDate(), activity.getDate());
+        return getType() == activity.getType() && getArea() == activity.getArea() && Objects.equals(getDate(),
+                activity.getDate());
     }
 
     @Override
