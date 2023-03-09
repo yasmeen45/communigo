@@ -1,0 +1,37 @@
+{
+    "upcoming activities": [
+        {
+            "area": "VANCOUVER",
+            "date": "2023-04-12",
+            "type": "RUN"
+        },
+        {
+            "area": "BURNABY",
+            "date": "2023-04-24",
+            "type": "BIKE"
+        },
+        {
+            "area": "VANCOUVER",
+            "date": "2023-05-08",
+            "type": "WALK"
+        },
+        {
+            "area": "BURNABY",
+            "date": "2023-05-14",
+            "type": "RUN"
+        },
+        {
+            "area": "SURREY",
+            "date": "2023-05-21",
+            "type": "WALK"
+        }
+    ],
+    "user": {
+        "registered activities": [{
+            "area": "BURNABY",
+            "date": "2023-05-14",
+            "type": "RUN"
+        }],
+        "posted activities": []
+    }
+}

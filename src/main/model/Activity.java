@@ -5,6 +5,7 @@ import persistance.Writable;
 import ui.Application;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 // Represents and activity with a type, area, and date
 public class Activity implements Writable {
@@ -18,6 +19,19 @@ public class Activity implements Writable {
         this.type = type;
         this.area = area;
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return getType() == activity.getType() && getArea() == activity.getArea() && Objects.equals(getDate(), activity.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getType(), getArea(), getDate());
     }
 
     // EFFECTS: return true if contents of a is equal to this
@@ -67,7 +81,6 @@ public class Activity implements Writable {
 
     // citation: modelled after Json Demo provided in P2 description on EdX
     // EFFECTS: returns this as a JSON object
-    // TODO: TEST
     @Override
     public JSONObject toJson() {
         JSONObject object = new JSONObject();

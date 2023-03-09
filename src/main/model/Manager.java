@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 // Manages functionality with a user and all upcoming activities
 public class Manager implements Writable {
@@ -30,7 +31,6 @@ public class Manager implements Writable {
     }
 
     // EFFECTS: create a new manager with given user and upcomingActivities
-    // TODO - TEST THIS METHOD
     public Manager(User user, List<Activity> activities) {
         this.user = user;
         this.upcomingActivities = activities;
@@ -152,7 +152,6 @@ public class Manager implements Writable {
 
     // citation: modelled after Json Demo provided in P2 description on EdX
     // EFFECTS: returns this as a JSON object
-    // TODO: TEST
     @Override
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
@@ -161,7 +160,6 @@ public class Manager implements Writable {
         return object;
     }
 
-    // TODO: TEST
     // EFFECTS: return given list of activities as a JSON array
     public JSONArray activitiesToJson(List<Activity> activities) {
         JSONArray array = new JSONArray();
@@ -172,8 +170,6 @@ public class Manager implements Writable {
 
         return array;
     }
-
-
 }
 
 

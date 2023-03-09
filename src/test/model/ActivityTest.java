@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.Application;
@@ -63,5 +64,12 @@ class ActivityTest {
         assertEquals("Vancouver", a1.getAreaToPrint());
         assertEquals("Burnaby", a2.getAreaToPrint());
         assertEquals("Surrey", a3.getAreaToPrint());
+    }
+
+    @Test
+    public void testToJson() {
+        assertEquals("{\"area\":\"VANCOUVER\",\"date\":\"2023-05-01\",\"type\":\"RUN\"}",
+                a1.toJson().toString());
+        // credit: https://piazza.com/class/lci2wx0f1i74k2/post/872
     }
 }

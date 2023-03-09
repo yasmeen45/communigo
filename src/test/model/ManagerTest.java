@@ -33,7 +33,7 @@ class ManagerTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructorNoParameters() {
         List<Activity> result = m1.getActivities();
         List<Activity> expected = new ArrayList<>();
 
@@ -44,6 +44,27 @@ class ManagerTest {
         expected.add(a5);
 
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConstructorWithParameters() {
+        List<Activity> registered = new ArrayList<>();
+        registered.add(a1);
+        registered.add(a2);
+        List<Activity> posted = new ArrayList<>();
+        posted.add(a1);
+        User user = new User(registered, posted);
+
+        List<Activity> upcomingActivities = new ArrayList<>();
+        upcomingActivities.add(a2);
+        upcomingActivities.add(a3);
+        upcomingActivities.add(a4);
+
+        Manager manager = new Manager(user, upcomingActivities);
+
+        assertEquals(upcomingActivities, manager.getActivities());
+        assertEquals(registered, manager.getRegisteredActivities());
+        assertEquals(posted, manager.getPostedActivities());
     }
 
     @Test
@@ -194,6 +215,30 @@ class ManagerTest {
 
         assertEquals(1, m1.getPostedActivities().size());
         assertTrue(m1.getPostedActivities().get(0).equalTo(a6));
+    }
+
+    @Test
+    public void testToJson() {
+        assertEquals("{\"upcoming activities\":[{\"area\":\"SURREY\",\"date\":\"2023-05-21\"," +
+                        "\"type\":\"WALK\"},{\"area\":\"VANCOUVER\",\"date\":\"2023-04-12\",\"type\":\"RUN\"}," +
+                        "{\"area\":\"BURNABY\",\"date\":\"2023-04-24\",\"type\":\"BIKE\"},{\"area\":\"VANCOUVER\"," +
+                        "\"date\":\"2023-05-08\",\"type\":\"WALK\"},{\"area\":\"BURNABY\",\"date\":\"2023-05-14\"," +
+                        "\"type\":\"RUN\"}],\"user\":{\"registered activities\":[],\"posted activities\":[]}}",
+                m1.toJson().toString());
+        // credit: https://piazza.com/class/lci2wx0f1i74k2/post/872
+    }
+
+    @Test
+    public void testActivitiesToJson() {
+        List<Activity> activities = new ArrayList<>();
+        assertEquals("[]", m1.activitiesToJson(activities).toString());
+
+        activities.add(a2);
+        activities.add(a3);
+        assertEquals("[{\"area\":\"VANCOUVER\",\"date\":\"2023-04-12\",\"type\":\"RUN\"}," +
+                        "{\"area\":\"BURNABY\",\"date\":\"2023-04-24\",\"type\":\"BIKE\"}]",
+                m1.activitiesToJson(activities).toString());
+        // credit: https://piazza.com/class/lci2wx0f1i74k2/post/872
     }
 
 }

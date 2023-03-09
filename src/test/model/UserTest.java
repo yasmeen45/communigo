@@ -40,12 +40,25 @@ class UserTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructorNoParameters() {
         List<Activity> result = u1.getPostedActivities();
         assertTrue(result.isEmpty());
 
         List<Activity> result2 = u1.getRegisteredActivities();
         assertTrue(result2.isEmpty());
+    }
+
+    @Test
+    public void testConstructorWithParameters() {
+        List<Activity> registered = new ArrayList<>();
+        registered.add(a1);
+        registered.add(a2);
+        List<Activity> posted = new ArrayList<>();
+        posted.add(a1);
+
+        User user = new User(registered, posted);
+        assertEquals(registered, user.getRegisteredActivities());
+        assertEquals(posted, user.getPostedActivities());
     }
 
     @Test
@@ -125,5 +138,14 @@ class UserTest {
         assertFalse(u2.alreadyRegistered(a2));
 
         assertFalse(u1.alreadyRegistered(a1));
+    }
+
+    @Test
+    public void testToJson() {
+        assertEquals("{\"registered activities\":[{\"area\":\"VANCOUVER\",\"date\":\"2023-05-01\"," +
+                        "\"type\":\"RUN\"}],\"posted activities\":[{\"area\":\"VANCOUVER\",\"date\":\"2023-05-01\"," +
+                        "\"type\":\"RUN\"}]}",
+                u2.toJson().toString());
+        // credit: https://piazza.com/class/lci2wx0f1i74k2/post/872
     }
 }
