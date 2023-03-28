@@ -81,6 +81,7 @@ class ActivityTest {
     @Test
     public void testEqualsOverride() {
         assertFalse(a1.equals(null));
+        assertFalse(a1.equals(new Manager()));
         Activity aa = new Activity(a1.getType(), a1.getArea(), a1.getDate());
         assertTrue(a1.equals(aa));
     }
