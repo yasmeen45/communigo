@@ -27,7 +27,23 @@
         }
     ],
     "user": {
-        "registered activities": [],
+        "registered activities": [
+            {
+                "area": "VANCOUVER",
+                "date": "2023-05-08",
+                "type": "WALK"
+            },
+            {
+                "area": "BURNABY",
+                "date": "2023-05-14",
+                "type": "RUN"
+            },
+            {
+                "area": "SURREY",
+                "date": "2023-05-21",
+                "type": "WALK"
+            }
+        ],
         "posted activities": []
     }
 }

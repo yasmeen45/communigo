@@ -12,6 +12,8 @@ import persistance.JsonWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +21,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 
-public class GUI implements ActionListener {
+public class GUI implements ActionListener, ListSelectionListener {
 
     private static final String JSON_FILE = "./data/saved.json";
     private Manager manager;
@@ -32,8 +35,12 @@ public class GUI implements ActionListener {
     private JPanel upcomingPanel;
     private JPanel registeredPanel;
 
+    private JButton registerButton;
+
     DefaultListModel upcomingListModel;
-    JList list;
+    JList upcomingList;
+    DefaultListModel registeredListModel;
+    JList registeredList;
 
     // EFFECTS: creates a new instance of application with a manager,
     //          Json reader/writer, and creates GUI
@@ -132,14 +139,14 @@ public class GUI implements ActionListener {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,40));
 
-        DefaultListModel listModel = new DefaultListModel();
+        upcomingListModel = new DefaultListModel();
         for (Activity activity : manager.getActivitiesChronological()) {
             String element = activityToString(activity);
-            listModel.addElement(element);
+            upcomingListModel.addElement(element);
         }
-        JList list = new JList(listModel);
+        upcomingList = new JList(upcomingListModel);
 
-        displayActivities(listModel, list, upcomingPanel);
+        displayActivities(upcomingListModel, upcomingList, upcomingPanel);
 
         addUpcomingButtons();
     }
@@ -147,13 +154,17 @@ public class GUI implements ActionListener {
     // MODIFIES: this
     // EFFECTS: add buttons to upcoming activities page
     private void addUpcomingButtons() {
+        registerButton = new JButton("Register Selected Activity");
+        registerButton.setActionCommand("Register Selected Activity");
+        registerButton.addActionListener(this);
+        registerButton.setFont(new Font(registerButton.getFont().getFontName(),Font.PLAIN,20));
+        upcomingPanel.add(registerButton);
+
         JButton returnToMenuButton = new JButton("Return to Menu");
         returnToMenuButton.setActionCommand("Return to Menu from Upcoming");
         returnToMenuButton.addActionListener(this);
         returnToMenuButton.setFont(new Font(returnToMenuButton.getFont().getFontName(),Font.PLAIN,20));
         upcomingPanel.add(returnToMenuButton);
-
-
     }
 
     // REGISTERED ACTIVITIES PANEL =======================================================================
@@ -170,7 +181,14 @@ public class GUI implements ActionListener {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,40));
 
-        displayActivities(manager.getRegisteredActivities(), registeredPanel);
+        registeredListModel = new DefaultListModel();
+        for (Activity activity : manager.getRegisteredActivities()) {
+            String element = activityToString(activity);
+            registeredListModel.addElement(element);
+        }
+        registeredList = new JList(registeredListModel);
+
+        displayActivities(registeredListModel, registeredList, registeredPanel);
 
         JButton returnToMenuButton = new JButton("Return to Menu");
         returnToMenuButton.setActionCommand("Return to Menu from Registered");
@@ -188,7 +206,7 @@ public class GUI implements ActionListener {
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
-        //list.addListSelectionListener(this);
+        list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(list);
         panel.add(listScrollPane);
@@ -199,6 +217,56 @@ public class GUI implements ActionListener {
         String result = activity.getTypeToPrint() + "  /  " + activity.getAreaToPrint()
                 + "  /  " + activity.getDate().toString();
         return result;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: add given activity string to manager's registered activities
+    private void registerActivity(String activityString) {
+        manager.registerActivity(createActivity(activityString));
+        updateRegisteredActivities();
+    }
+
+    // EFFECTS: create and return Activity from activityString
+    private Activity createActivity(String activityString) {
+        Application.Type type;
+        Application.Area area;
+        LocalDate date;
+
+        // find type
+        if (activityString.contains("Running")) {
+            type = Application.Type.RUN;
+        } else if (activityString.contains("Biking")) {
+            type = Application.Type.BIKE;
+        } else {
+            type = Application.Type.WALK;
+        }
+
+        // find area
+        if (activityString.contains("Vancouver")) {
+            area = Application.Area.VANCOUVER;
+        } else if (activityString.contains("Surrey")) {
+            area = Application.Area.SURREY;
+        } else {
+            area = Application.Area.BURNABY;
+        }
+
+        // find date
+        int startIndex = activityString.length() - 10;
+        date = LocalDate.parse(activityString.substring(startIndex));
+
+        Activity activity = new Activity(type, area, date);
+        return activity;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: update registeredList with current registeredActivities
+    private void updateRegisteredActivities() {
+        registeredListModel = new DefaultListModel();
+        for (Activity a : manager.getRegisteredActivities()) {
+            String element = activityToString(a);
+            registeredListModel.addElement(element);
+        }
+        registeredList.setModel(registeredListModel);
     }
 
     // JSON read/write methods ====================================================================
@@ -247,6 +315,7 @@ public class GUI implements ActionListener {
             saveData();
         } else if (e.getActionCommand().equals("Load Data from File")) {
             loadData();
+            updateRegisteredActivities();
         }
         actionPerformedPartTwo(e);
     }
@@ -265,8 +334,27 @@ public class GUI implements ActionListener {
             frame.revalidate();
             frame.repaint();
         } else if (e.getActionCommand().equals("Register Selected Activity")) {
-            int index = list.getSelectedIndex();
-            upcomingListModel.remove(index);
+            int index = upcomingList.getSelectedIndex();
+            String activity = (String) upcomingListModel.get(index);
+            registerActivity(activity);
+            JOptionPane.showMessageDialog(null, "Successfully Registered in Activity!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: enable registerButton if there is an activity selected,
+    //          otherwise, disable registerButton
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html
+        if (e.getValueIsAdjusting() == false) {
+            if (upcomingList.getSelectedIndex() == -1) {
+                // no selection
+                registerButton.setEnabled(false);
+            } else {
+                // selection
+                registerButton.setEnabled(true);
+            }
         }
     }
 }
