@@ -5,20 +5,39 @@ package ui;
 // - https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html
 // - https://stackoverflow.com/questions/10984114/change-jpanel-after-clicking-on-a-button
 
+import model.Manager;
+import persistance.JsonReader;
+import persistance.JsonWriter;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class GUI implements ActionListener {
+
+    private static final String JSON_FILE = "./data/saved.json";
+    private Manager manager;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     private JFrame frame;
     private JPanel homePanel;
     private JPanel upcomingPanel;
     private JPanel registeredPanel;
 
-    // EFFECTS: constructs a new instance of GUI to run Communigo
+    // EFFECTS: creates a new instance of application with a manager,
+    //          Json reader/writer, and creates GUI
     public GUI() {
+        this.manager = new Manager();
+        jsonWriter = new JsonWriter(JSON_FILE);
+        jsonReader = new JsonReader(JSON_FILE);
         setupDisplay();
     }
 
@@ -28,8 +47,8 @@ public class GUI implements ActionListener {
         frame = new JFrame();
 
         setupHomePanel();
-        setupUpcomingActivitiesPanel();
-        setupRegisteredActivitiesPanel();
+        setupUpcomingPanel();
+        setupRegisteredPanel();
 
         frame.add(homePanel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,12 +57,24 @@ public class GUI implements ActionListener {
         frame.setVisible(true);
     }
 
+    // HOME PANEL =====================================================================================
+
     // MODIFIES: this
     // EFFECTS: sets up home page
     private void setupHomePanel() {
         homePanel = new JPanel();
-        homePanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        homePanel.setBorder(BorderFactory.createEmptyBorder(75, 100, 75, 100));
         homePanel.setLayout(new GridLayout(0, 1));
+
+        BufferedImage homePic = null;
+        try {
+            homePic = ImageIO.read(new File("./images/HomePagePicture.jpg"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        JLabel homePicLabel = new JLabel(new ImageIcon(homePic));
+        homePanel.add(homePicLabel);
+        //https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
 
         JLabel title = new JLabel("Welcome to Communigo!");
         homePanel.add(title);
@@ -83,25 +114,58 @@ public class GUI implements ActionListener {
         homePanel.add(loadDataButton);
     }
 
+    // UPCOMING ACTIVITIES PANEL =======================================================================
 
     // MODIFIES: this
     // EFFECTS: sets up page for viewing upcoming activities
-    private void setupUpcomingActivitiesPanel() {
+    private void setupUpcomingPanel() {
         upcomingPanel = new JPanel();
         upcomingPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         upcomingPanel.setLayout(new GridLayout(0, 1));
         upcomingPanel.setBackground(Color.BLUE);
     }
 
+    // REGISTERED ACTIVITIES PANEL =======================================================================
+
     // MODIFIES: this
     // EFFECTS: sets up page for viewing registered activities
-    private void setupRegisteredActivitiesPanel() {
+    private void setupRegisteredPanel() {
         registeredPanel = new JPanel();
         registeredPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         registeredPanel.setLayout(new GridLayout(0, 1));
         registeredPanel.setBackground(Color.CYAN);
     }
 
+    // JSON read/write methods ====================================================================
+
+    // MODIFIES: this
+    // EFFECTS: saves application data to Json file
+    private void saveData() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(manager);
+            jsonWriter.close();
+            JOptionPane.showMessageDialog(null, "Success! Data saved.");
+            // https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+        } catch (FileNotFoundException e) {
+            System.out.println("\nUnable to save to file.");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads application data from Json file
+    private void loadData() {
+        try {
+            manager = jsonReader.read();
+            JOptionPane.showMessageDialog(null, "Success! Data loaded.");
+            // https://stackoverflow.com/questions/9119481/how-to-present-a-simple-alert-message-in-java
+        } catch (IOException e) {
+            System.out.println("\nUnable to read from file.");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: handles all user actions
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("View Upcoming Activities")) {
@@ -113,9 +177,9 @@ public class GUI implements ActionListener {
             frame.add(registeredPanel);
             frame.validate();
         } else if (e.getActionCommand().equals("Save Data to File")) {
-            // TODO: logic to save data
+            saveData();
         } else if (e.getActionCommand().equals("Load Data from File")) {
-            // TODO: logic to load data
+            loadData();
         }
     }
 }
