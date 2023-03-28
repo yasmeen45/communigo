@@ -1,11 +1,6 @@
 {
     "upcoming activities": [
         {
-            "area": "SURREY",
-            "date": "2023-05-21",
-            "type": "WALK"
-        },
-        {
             "area": "VANCOUVER",
             "date": "2023-04-12",
             "type": "RUN"
@@ -24,6 +19,11 @@
             "area": "BURNABY",
             "date": "2023-05-14",
             "type": "RUN"
+        },
+        {
+            "area": "SURREY",
+            "date": "2023-05-21",
+            "type": "WALK"
         }
     ],
     "user": {

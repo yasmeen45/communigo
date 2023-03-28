@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 public class GUI implements ActionListener {
 
@@ -32,6 +31,9 @@ public class GUI implements ActionListener {
     private JPanel homePanel;
     private JPanel upcomingPanel;
     private JPanel registeredPanel;
+
+    DefaultListModel upcomingListModel;
+    JList list;
 
     // EFFECTS: creates a new instance of application with a manager,
     //          Json reader/writer, and creates GUI
@@ -57,6 +59,7 @@ public class GUI implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
+
 
     // HOME PANEL =====================================================================================
 
@@ -121,25 +124,68 @@ public class GUI implements ActionListener {
     // EFFECTS: sets up page for viewing upcoming activities
     private void setupUpcomingPanel() {
         upcomingPanel = new JPanel();
-        upcomingPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        upcomingPanel.setBorder(BorderFactory.createEmptyBorder(0, 100, 75, 100));
         upcomingPanel.setLayout(new GridLayout(0, 1));
 
-        displayActivities(manager.getActivitiesChronological(), upcomingPanel);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: display provided activities to given panel
-    private void displayActivities(List<Activity> activities, JPanel panel) {
-        // https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
+        JLabel title = new JLabel("Upcoming Activities");
+        upcomingPanel.add(title);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,40));
 
         DefaultListModel listModel = new DefaultListModel();
-
-        for (Activity activity : activities) {
+        for (Activity activity : manager.getActivitiesChronological()) {
             String element = activityToString(activity);
             listModel.addElement(element);
         }
-
         JList list = new JList(listModel);
+
+        displayActivities(listModel, list, upcomingPanel);
+
+        addUpcomingButtons();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: add buttons to upcoming activities page
+    private void addUpcomingButtons() {
+        JButton returnToMenuButton = new JButton("Return to Menu");
+        returnToMenuButton.setActionCommand("Return to Menu from Upcoming");
+        returnToMenuButton.addActionListener(this);
+        returnToMenuButton.setFont(new Font(returnToMenuButton.getFont().getFontName(),Font.PLAIN,20));
+        upcomingPanel.add(returnToMenuButton);
+
+
+    }
+
+    // REGISTERED ACTIVITIES PANEL =======================================================================
+
+    // MODIFIES: this
+    // EFFECTS: sets up page for viewing registered activities
+    private void setupRegisteredPanel() {
+        registeredPanel = new JPanel();
+        registeredPanel.setBorder(BorderFactory.createEmptyBorder(0, 100, 75, 100));
+        registeredPanel.setLayout(new GridLayout(0, 1));
+
+        JLabel title = new JLabel("Registered Activities");
+        registeredPanel.add(title);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,40));
+
+        displayActivities(manager.getRegisteredActivities(), registeredPanel);
+
+        JButton returnToMenuButton = new JButton("Return to Menu");
+        returnToMenuButton.setActionCommand("Return to Menu from Registered");
+        returnToMenuButton.addActionListener(this);
+        returnToMenuButton.setFont(new Font(returnToMenuButton.getFont().getFontName(),Font.PLAIN,20));
+        registeredPanel.add(returnToMenuButton);
+    }
+
+    // OTHER METHODS ====================================================================================
+
+    // MODIFIES: this
+    // EFFECTS: display provided activities to given panel
+    private void displayActivities(DefaultListModel listModel, JList list, JPanel panel) {
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
+
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
         //list.addListSelectionListener(this);
@@ -153,17 +199,6 @@ public class GUI implements ActionListener {
         String result = activity.getTypeToPrint() + "  /  " + activity.getAreaToPrint()
                 + "  /  " + activity.getDate().toString();
         return result;
-    }
-
-    // REGISTERED ACTIVITIES PANEL =======================================================================
-
-    // MODIFIES: this
-    // EFFECTS: sets up page for viewing registered activities
-    private void setupRegisteredPanel() {
-        registeredPanel = new JPanel();
-        registeredPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        registeredPanel.setLayout(new GridLayout(0, 1));
-        registeredPanel.setBackground(Color.CYAN);
     }
 
     // JSON read/write methods ====================================================================
@@ -195,21 +230,43 @@ public class GUI implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: handles all user actions
+    // EFFECTS: handles all user actions (part 1)
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("View Upcoming Activities")) {
             frame.remove(homePanel);
             frame.add(upcomingPanel);
-            frame.validate();
+            frame.revalidate();
+            frame.repaint();
         } else if (e.getActionCommand().equals("View Registered Activities")) {
             frame.remove(homePanel);
             frame.add(registeredPanel);
-            frame.validate();
+            frame.revalidate();
+            frame.repaint();
         } else if (e.getActionCommand().equals("Save Data to File")) {
             saveData();
         } else if (e.getActionCommand().equals("Load Data from File")) {
             loadData();
+        }
+        actionPerformedPartTwo(e);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: handles all user actions (part 2)
+    public void actionPerformedPartTwo(ActionEvent e) {
+        if (e.getActionCommand().equals("Return to Menu from Upcoming")) {
+            frame.remove(upcomingPanel);
+            frame.add(homePanel);
+            frame.revalidate();
+            frame.repaint();
+        } else if (e.getActionCommand().equals("Return to Menu from Registered")) {
+            frame.remove(registeredPanel);
+            frame.add(homePanel);
+            frame.revalidate();
+            frame.repaint();
+        } else if (e.getActionCommand().equals("Register Selected Activity")) {
+            int index = list.getSelectedIndex();
+            upcomingListModel.remove(index);
         }
     }
 }
