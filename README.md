@@ -11,11 +11,13 @@ to solve this issue and foster communities that support active lifestyles.
 
 # Instructions for Grader
 
-- You can generate the first required action related to adding Xs to a Y by...
-- You can generate the second required action related to adding Xs to a Y by...
-- You can locate my visual component by...
-- You can save the state of my application by...
-- You can reload the state of my application by...
+- You can generate the first required action related to adding Xs to a Y by selecting the "View Upcoming Activities"
+option in the main menu, selecting an activity, and selecting "Register Selected Activity".
+- You can generate the second required action related to adding Xs to a Y by selecting the "View Registered Activities"
+option in the main menu. This shows only registered activities, which is filtered from upcoming activities.
+- You can locate my visual component on the home screen, at the very top.
+- You can save the state of my application by selecting the "Save Data to File" option in the main menu.
+- You can reload the state of my application by selecting the "Load Data from File" option in the main menu.
 
 ## Key Functionalities / User Stories
 - As a user, I want to be able to view all upcoming activities
