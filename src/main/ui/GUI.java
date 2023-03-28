@@ -5,6 +5,7 @@ package ui;
 // - https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html
 // - https://stackoverflow.com/questions/10984114/change-jpanel-after-clicking-on-a-button
 
+import model.Activity;
 import model.Manager;
 import persistance.JsonReader;
 import persistance.JsonWriter;
@@ -18,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.List;
 
 public class GUI implements ActionListener {
 
@@ -122,7 +123,36 @@ public class GUI implements ActionListener {
         upcomingPanel = new JPanel();
         upcomingPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         upcomingPanel.setLayout(new GridLayout(0, 1));
-        upcomingPanel.setBackground(Color.BLUE);
+
+        displayActivities(manager.getActivitiesChronological(), upcomingPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: display provided activities to given panel
+    private void displayActivities(List<Activity> activities, JPanel panel) {
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
+
+        DefaultListModel listModel = new DefaultListModel();
+
+        for (Activity activity : activities) {
+            String element = activityToString(activity);
+            listModel.addElement(element);
+        }
+
+        JList list = new JList(listModel);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setSelectedIndex(0);
+        //list.addListSelectionListener(this);
+        list.setVisibleRowCount(5);
+        JScrollPane listScrollPane = new JScrollPane(list);
+        panel.add(listScrollPane);
+    }
+
+    // EFFECTS: convert activity to "TYPE - AREA - DATE" format, and return it
+    private String activityToString(Activity activity) {
+        String result = activity.getTypeToPrint() + "  /  " + activity.getAreaToPrint()
+                + "  /  " + activity.getDate().toString();
+        return result;
     }
 
     // REGISTERED ACTIVITIES PANEL =======================================================================
