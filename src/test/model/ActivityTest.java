@@ -77,4 +77,11 @@ class ActivityTest {
                 a1.toJson().toString());
         // credit: https://piazza.com/class/lci2wx0f1i74k2/post/872
     }
+
+    @Test
+    public void testEqualsOverride() {
+        assertFalse(a1.equals(null));
+        Activity aa = new Activity(a1.getType(), a1.getArea(), a1.getDate());
+        assertTrue(a1.equals(aa));
+    }
 }
