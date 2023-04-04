@@ -51,3 +51,20 @@ Not all will be completed, but some ideas for extra features:
 
 ## Phase 4: Task 2
 Sample of events
+
+## Phase 4: Task 3
+
+One major refactoring that can be done to improve my application is splitting up my ui.Application
+class into multiple classes.
+
+This needs to be done because the Application class is currently hundreds of lines long and handles many different
+tasks, so it has very low cohesion.
+
+This can be done by:
+- Creating a Printer class to handle all printing to screen
+- Creating a Filer class to contain all methods related to user's
+activity filtering options
+- 
+
+
+
