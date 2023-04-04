@@ -48,3 +48,6 @@ Not all will be completed, but some ideas for extra features:
 - Chat function between friends
 - Points/tier system. Points earned for each activity completed to level up through tiers from
   beginner to pro
+
+## Phase 4: Task 2
+Sample of events
