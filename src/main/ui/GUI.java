@@ -6,6 +6,8 @@ package ui;
 // - https://stackoverflow.com/questions/10984114/change-jpanel-after-clicking-on-a-button
 
 import model.Activity;
+import model.Event;
+import model.EventLog;
 import model.Manager;
 import persistance.JsonReader;
 import persistance.JsonWriter;
@@ -17,11 +19,15 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class GUI implements ActionListener, ListSelectionListener {
 
@@ -61,7 +67,19 @@ public class GUI implements ActionListener, ListSelectionListener {
         setupRegisteredPanel();
 
         frame.add(homePanel, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                EventLog log = EventLog.getInstance();
+                System.out.println("Event Log");
+                System.out.println("=========\n");
+
+                for (Event event : log) {
+                    System.out.println(e.toString());
+                }
+            }
+        });
         frame.setTitle("Communigo");
         frame.pack();
         frame.setVisible(true);

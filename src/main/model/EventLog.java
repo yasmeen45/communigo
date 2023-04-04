@@ -5,10 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 
-// Represents a log of activity events, including:
-    // * register activity
-    // * save data to file
-    // * load data to file
+// Represents a log of activity events (registering in activity)
 public class EventLog implements Iterable<Event> {
     /** the only EventLog in the system (Singleton Design Pattern) */
     private static EventLog theLog;

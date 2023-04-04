@@ -89,4 +89,10 @@ public class Activity implements Writable {
         object.put("date", this.date.toString());
         return object;
     }
+
+    public String toPrint() {
+        String result = this.getTypeToPrint() + "  /  " + this.getAreaToPrint()
+                + "  /  " + this.getDate().toString();
+        return result;
+    }
 }

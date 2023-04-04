@@ -57,6 +57,9 @@ public class Manager implements Writable {
     // EFFECTS: register user in provided activity. if user already registered
     public void registerActivity(Activity activity) {
         user.registerActivity(activity);
+        EventLog log = EventLog.getInstance();
+        Event event = new Event("Registered in: " + activity.toPrint());
+        log.logEvent(event);
     }
 
     // MODIFIES: this
