@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 // Manages functionality with a user and all upcoming activities
 public class Manager implements Writable {
@@ -152,6 +151,15 @@ public class Manager implements Writable {
         }
         return sortChronological(result);
     }
+
+    // MODIFIES: this
+    // EFFECTS: adds "user viewed registered activities" event to EventLog
+    public void viewRegisteredEventOccurred() {
+        EventLog log = EventLog.getInstance();
+        Event event = new Event("User viewed registered activities");
+        log.logEvent(event);
+    }
+
 
     // citation: modelled after Json Demo provided in P2 description on EdX
     // EFFECTS: returns this as a JSON object

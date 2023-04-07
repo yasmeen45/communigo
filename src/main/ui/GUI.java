@@ -19,15 +19,11 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class GUI implements ActionListener, ListSelectionListener {
 
@@ -67,19 +63,7 @@ public class GUI implements ActionListener, ListSelectionListener {
         setupRegisteredPanel();
 
         frame.add(homePanel, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                EventLog log = EventLog.getInstance();
-                System.out.println("Event Log");
-                System.out.println("=========\n");
-
-                for (Event event : log) {
-                    System.out.println(e.toString());
-                }
-            }
-        });
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setTitle("Communigo");
         frame.pack();
         frame.setVisible(true);
@@ -130,6 +114,12 @@ public class GUI implements ActionListener, ListSelectionListener {
         viewRegisteredButton.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,20));
         homePanel.add(viewRegisteredButton);
 
+        addHomeButtonsPartTwo(title);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: add buttons to home page (part two)
+    private void addHomeButtonsPartTwo(JLabel title) {
         JButton saveDataButton = new JButton("Save Data to File");
         saveDataButton.setActionCommand("Save Data to File");
         saveDataButton.addActionListener(this);
@@ -141,7 +131,14 @@ public class GUI implements ActionListener, ListSelectionListener {
         loadDataButton.addActionListener(this);
         loadDataButton.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,20));
         homePanel.add(loadDataButton);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setActionCommand("Exit");
+        exitButton.addActionListener(this);
+        exitButton.setFont(new Font(title.getFont().getFontName(),Font.PLAIN,20));
+        homePanel.add(exitButton);
     }
+
 
     // UPCOMING ACTIVITIES PANEL =======================================================================
 
@@ -329,6 +326,7 @@ public class GUI implements ActionListener, ListSelectionListener {
             frame.add(registeredPanel);
             frame.revalidate();
             frame.repaint();
+            manager.viewRegisteredEventOccurred();
         } else if (e.getActionCommand().equals("Save Data to File")) {
             saveData();
         } else if (e.getActionCommand().equals("Load Data from File")) {
@@ -356,6 +354,15 @@ public class GUI implements ActionListener, ListSelectionListener {
             String activity = (String) upcomingListModel.get(index);
             registerActivity(activity);
             JOptionPane.showMessageDialog(null, "Successfully Registered in Activity!");
+        } else if (e.getActionCommand().equals("Exit")) {
+            EventLog log = EventLog.getInstance();
+            System.out.println("EVENT LOG\n=========\n");
+
+            for (Event event : log) {
+                System.out.println(event.toString() + "\n");
+            }
+
+            System.exit(0);
         }
     }
 
