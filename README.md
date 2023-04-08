@@ -54,7 +54,7 @@ Not all will be completed, but some ideas for extra features:
 
 Sample of events:
 
-EVENT LOG 
+EVENT LOG \
 =========.
 
 Thu Apr 06 18:13:29 PDT 2023\
