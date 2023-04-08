@@ -15,7 +15,7 @@ to solve this issue and foster communities that support active lifestyles.
 option in the main menu, selecting an activity, and selecting "Register Selected Activity".
 - You can generate the second required action related to adding Xs to a Y by selecting the "View Registered Activities"
 option in the main menu. This shows only registered activities, which is filtered from upcoming activities.
-- You can locate my visual component on the home screen, at the very top.
+- You can locate my visual component on the home screen, at the very top (image).
 - You can save the state of my application by selecting the "Save Data to File" option in the main menu.
 - You can reload the state of my application by selecting the "Load Data from File" option in the main menu.
 
@@ -50,7 +50,7 @@ Not all will be completed, but some ideas for extra features:
   beginner to pro
 
 ## Phase 4: Task 2
-*NOTE: Please use the "Exit" button in the main menu, not the "X" in the top right corner of the window.*
+*NOTE: To exit application, please use the "Exit" button in the main menu, not the "X" in the top right corner of the window.*
 
 Sample of events:
 
@@ -71,14 +71,17 @@ User viewed registered activities
 One major refactoring that can be done to improve my application is splitting up my ui.Application
 class into multiple classes.
 
-This needs to be done because the Application class is currently hundreds of lines long and handles many different
-tasks, so it has very low cohesion.
+This needs to be done because the Application class is currently hundreds of lines long and handles all
+tasks related to the console-based UI, so it has very low cohesion.
 
 This can be done by:
 - Creating a Printer class to handle all printing to screen
-- Creating a Filer class to contain all methods related to user's
-activity filtering options
-- 
+- Creating an InputHandler class to handle all user input
+- Creating a Filter class to contain all methods related to user's
+  activity filtering options
+- Creating a ActivityAction class to contain all methods related to a user's
+actions performed on activities (ex. post activity, register, cancel registration, etc.). This 
+class can be further split up into multiple smaller classes for improved cohesion.
 
 
 
