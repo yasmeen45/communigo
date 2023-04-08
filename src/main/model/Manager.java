@@ -57,7 +57,7 @@ public class Manager implements Writable {
     public void registerActivity(Activity activity) {
         user.registerActivity(activity);
         EventLog log = EventLog.getInstance();
-        Event event = new Event("Registered in: " + activity.toPrint());
+        Event event = new Event("User registered in: " + activity.toPrint());
         log.logEvent(event);
     }
 

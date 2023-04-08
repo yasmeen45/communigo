@@ -50,7 +50,21 @@ Not all will be completed, but some ideas for extra features:
   beginner to pro
 
 ## Phase 4: Task 2
-Sample of events
+*NOTE: Please use the "Exit" button in the main menu, not the "X" in the top right corner of the window.*
+
+Sample of events:
+
+EVENT LOG 
+=========.
+
+Thu Apr 06 18:13:29 PDT 2023\
+User viewed registered activities
+
+Thu Apr 06 18:13:33 PDT 2023 \
+User registered in: Running  /  Burnaby  /  2023-05-14
+
+Thu Apr 06 18:13:36 PDT 2023 \
+User viewed registered activities
 
 ## Phase 4: Task 3
 
